@@ -8,10 +8,11 @@ import rest_with_spring_boot.data.dto.v1.PersonDTO;
 import rest_with_spring_boot.data.dto.v2.PersonDTOV2;
 import rest_with_spring_boot.services.PersonServices;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/api/person/v1")
 public class PersonController {
 
     @Autowired
@@ -27,7 +28,12 @@ public class PersonController {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     public PersonDTO findById(@PathVariable("id") Long id) {
-        return service.findById(id);
+        var person = service.findById(id);
+        person.setBirthDay(new Date());
+        person.setPhoneNumber("");
+        person.setLastName(null);
+        person.setSensitiveData("Foo Bar");
+        return person;
     }
 
     @PostMapping(
